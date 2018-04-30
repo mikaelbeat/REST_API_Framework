@@ -8,6 +8,10 @@ import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import training.constants.Auth;
 import training.constants.Path;
+import static org.hamcrest.Matchers.lessThan;
+
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 public class Rest_Utilities {
 
@@ -29,9 +33,27 @@ public class Rest_Utilities {
 		REQUEST_BUILDER = new RequestSpecBuilder();
 		REQUEST_BUILDER.setBaseUri(Path.BASE_URI);
 		REQUEST_BUILDER.setAuth(authScheme);
-		
 		REQUEST_SPEC = REQUEST_BUILDER.build();
 		return REQUEST_SPEC;
 	}
 	
+	public static ResponseSpecification get_Response_Specification() {
+		
+		RESPONSE_BUILDER = new ResponseSpecBuilder();
+		RESPONSE_BUILDER.expectStatusCode(200);
+		RESPONSE_BUILDER.expectResponseTime(lessThan(3L), TimeUnit.SECONDS);
+		RESPONSE_SPEC = RESPONSE_BUILDER.build();
+		return RESPONSE_SPEC;
+	}
+	
+	public static RequestSpecification create_Query_Parameters(RequestSpecification rspec,
+			String param, String value) {
+		return rspec.queryParam(param, value);
+	}
+	
+	public static RequestSpecification create_Query_Parameters(RequestSpecification rspec,
+			Map<String, String> queryMap) {
+		return rspec.queryParams(queryMap);
+	}
+		
 }
