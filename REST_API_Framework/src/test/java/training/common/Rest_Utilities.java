@@ -4,11 +4,13 @@ import io.restassured.RestAssured;
 import io.restassured.authentication.AuthenticationScheme;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
+import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import training.constants.Auth;
 import training.constants.Path;
 import static org.hamcrest.Matchers.lessThan;
+import static io.restassured.RestAssured.given;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -54,6 +56,34 @@ public class Rest_Utilities {
 	public static RequestSpecification create_Query_Parameters(RequestSpecification rspec,
 			Map<String, String> queryMap) {
 		return rspec.queryParams(queryMap);
+	}
+	
+	public static RequestSpecification create_Path_Parameters(RequestSpecification rspec,
+			String param, String value) {
+		return rspec.pathParam(param, value);
+	}
+	
+	public static Response get_Response() {
+		return given().get(ENDPOINT);
+	}
+	
+	public static Response get_Response(RequestSpecification reqSpec, String type) {
+		REQUEST_SPEC.spec(reqSpec);
+		Response response = null;
+		if (type.equalsIgnoreCase("get")) {
+			response = given().spec(REQUEST_SPEC).get(ENDPOINT);
+		} else if (type.equalsIgnoreCase("post")) {
+			response = given().spec(REQUEST_SPEC).post(ENDPOINT);
+		} else if (type.equalsIgnoreCase("put")) {
+			response = given().spec(REQUEST_SPEC).put(ENDPOINT);
+		} else if (type.equalsIgnoreCase("delete")) {
+			response = given().spec(REQUEST_SPEC).delete(ENDPOINT);
+		} else {
+			System.out.println("Type is not supported.");
+		}
+		response.then().log().all();
+		response.then().spec(RESPONSE_SPEC);
+		return response;
 	}
 		
 }
