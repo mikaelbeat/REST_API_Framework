@@ -4,6 +4,7 @@ import io.restassured.RestAssured;
 import io.restassured.authentication.AuthenticationScheme;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
+import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.path.xml.XmlPath;
 import io.restassured.response.Response;
@@ -96,6 +97,14 @@ public class Rest_Utilities {
 	public static XmlPath get_XmlPath(Response res) {
 		String path = res.asString();
 		return new XmlPath(path);
+	}
+	
+	public static void reset_BasePath() {
+		RestAssured.basePath = null;
+	}
+	
+	public static void set_ContentType(ContentType type) {
+		given().contentType(type);
 	}
 		
 }
