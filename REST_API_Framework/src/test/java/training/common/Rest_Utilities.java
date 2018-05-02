@@ -4,6 +4,8 @@ import io.restassured.RestAssured;
 import io.restassured.authentication.AuthenticationScheme;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
+import io.restassured.path.json.JsonPath;
+import io.restassured.path.xml.XmlPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
@@ -84,6 +86,16 @@ public class Rest_Utilities {
 		response.then().log().all();
 		response.then().spec(RESPONSE_SPEC);
 		return response;
+	}
+	
+	public static JsonPath get_JsonPath(Response res) {
+		String path = res.asString();
+		return new JsonPath(path);
+	}
+	
+	public static XmlPath get_XmlPath(Response res) {
+		String path = res.asString();
+		return new XmlPath(path);
 	}
 		
 }
