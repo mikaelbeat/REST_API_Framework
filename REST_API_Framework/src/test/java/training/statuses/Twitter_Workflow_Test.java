@@ -29,7 +29,7 @@ public class Twitter_Workflow_Test {
 	public  void post_Tweet() {
 		Response response =
 				given()
-					.spec(Rest_Utilities.create_Path_Parameters(reqSpec, "Status", "My first tweet"))
+					.spec(Rest_Utilities.create_Query_Parameters(reqSpec, "Status", "My first tweet"))
 				.when()
 					.post(Endpoints.STATUSES_TWEET_POST)
 				.then()
